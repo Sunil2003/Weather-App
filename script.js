@@ -105,4 +105,4 @@ const getWeatherData = async () => {
   }
 };
 
-document.addEventListener("DOMContentLoaded", getAltitudes());
+document.body.addEventListener("load", getAltitudes());
