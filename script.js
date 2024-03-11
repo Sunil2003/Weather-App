@@ -79,7 +79,7 @@ const getCurrentDateTime = (dt) => {
 };
 
 const getWeatherData = async () => {
-  const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=c4d8f5ea7dc703b83446d67a48aa40bd`;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=d9b14121d978f504a9e5d1da5d7a6f2e`;
 
   try {
     const res = await fetch(weatherUrl);
