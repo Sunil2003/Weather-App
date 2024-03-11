@@ -13,19 +13,51 @@ let w_pressure = document.querySelector(".weather_pressure");
 
 let citySearch = document.querySelector(".weather_search");
 
+let city;
 
-let city = "pune";
+const getAltitudes = () => {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      getCityName(latitude, longitude,(cityVal)=>{
+        city = `${cityVal}`
+        getWeatherData();
+      });
+    },
+    (error) => {
+      console.log(error.message);
+    }
+  );
+};
+
+const getCityName = async (latitude, longitude, callback) => {
+  let apiKey = `627b00aee18b4f40a518df85ea59ea6a`;
+  const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
+  try {
+    const resL = await fetch(apiUrl);
+    const data = await resL.json();
+    console.log(data.results[0].components);
+
+    const { city } = data.results[0].components;
+    callback(city);
+
+    
+  } catch (error) {
+    console.log(error.message);
+    callback('unknown');
+  }
+};
+
 citySearch.addEventListener("submit", (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    let cityName = document.querySelector(".city_name");
-    city = cityName.value;
+  let cityName = document.querySelector(".city_name");
+  city = cityName.value;
 
-    getWeatherData();
+  getWeatherData();
 
-    cityName.value = "";
-})
-
+  cityName.value = "";
+});
 
 const getCountryName = (code) => {
   return new Intl.DisplayNames([code], { type: "region" }).of(code);
@@ -63,7 +95,7 @@ const getWeatherData = async () => {
     w_temperature.innerHTML = `${(main.temp - 273.15).toFixed(0)}&#176C`;
     w_minTem.innerHTML = `MIN : ${(main.temp_min - 273.15).toFixed(2)}&#176C`;
 
-    w_maxTem.innerHTML = `MAX : ${(main.temp_max-273.15).toFixed(2)}&#176C`;
+    w_maxTem.innerHTML = `MAX : ${(main.temp_max - 273.15).toFixed(2)}&#176C`;
     w_feelsLike.innerHTML = `${(main.feels_like - 273.15).toFixed(2)}&#176C`;
     w_humidity.innerHTML = `${main.humidity}%`;
     w_wind.innerHTML = `${wind.speed} Km/h`;
@@ -73,4 +105,4 @@ const getWeatherData = async () => {
   }
 };
 
-document.body.addEventListener("load", getWeatherData());
+document.addEventListener("DOMContentLoaded", getAltitudes());
