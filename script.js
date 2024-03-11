@@ -98,7 +98,7 @@ const getWeatherData = async () => {
     w_maxTem.innerHTML = `MAX : ${(main.temp_max - 273.15).toFixed(2)}&#176C`;
     w_feelsLike.innerHTML = `${(main.feels_like - 273.15).toFixed(2)}&#176C`;
     w_humidity.innerHTML = `${main.humidity}%`;
-    w_wind.innerHTML = `${wind.speed} Km/h`;
+    w_wind.innerHTML = `${(wind.speed * 3600)} Km/h`;
     w_pressure.innerHTML = `${main.pressure} hPa`;
   } catch (error) {
     console.log(error);
